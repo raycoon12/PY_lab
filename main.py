@@ -26,6 +26,9 @@ def print_impact(impact):
         else:
             print("_", end="")
     print()"""
+    ground = ["_"]*LENGTH
+    for i in range(0, LENGTH):
+        print(ground[i], end="")
 def main():
     while True:
         angle, velocity = get_input()
