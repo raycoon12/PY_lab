@@ -44,15 +44,17 @@ def check_hit(pos_impact, pos):
 
 def main():
     pos1, pos2 = start_game()
+    shooter = pos1;
+    target = pos2
     while True:
+        print("Gracz: ", 1 if shooter == pos1 else 2)
         angle, velocity = get_input()
-        print(angle)
-        print(velocity)
-        z = calculate_impact(angle, velocity, pos1/SCALE)
-        print(z)
-        print_impact(z, pos1, pos2)
-        print(check_hit(z, pos2/SCALE))
 
+        z = calculate_impact(angle, velocity, shooter/SCALE)
+        print_impact(z, pos1, pos2)
+        if check_hit(z, target/SCALE):
+            break
+        shooter, target = target, shooter
 if __name__ == "__main__":
     main()
 
