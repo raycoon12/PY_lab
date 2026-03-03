@@ -27,8 +27,10 @@ def print_impact(impact):
             print("_", end="")
     print()"""
     ground = ["_"]*LENGTH
-    for i in range(0, LENGTH):
-        print(ground[i], end="")
+    ground[scaled_impact] = "X"
+    for symbol in ground:
+        print(symbol, end="")
+    print()
 def main():
     while True:
         angle, velocity = get_input()
