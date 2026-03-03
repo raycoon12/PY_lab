@@ -31,6 +31,7 @@ def print_impact(impact):
     for symbol in ground:
         print(symbol, end="")
     print()
+
 def main():
     while True:
         angle, velocity = get_input()
