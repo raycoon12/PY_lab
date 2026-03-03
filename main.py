@@ -28,8 +28,10 @@ def print_impact(impact):
     print()"""
     ground = ["_"]*LENGTH
     ground[scaled_impact] = "X"
-    for symbol in ground:
+    """for symbol in ground:
         print(symbol, end="")
+    """
+    [print(symbol, end="") for symbol in ground]
     print()
 
 def main():
