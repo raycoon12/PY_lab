@@ -1,6 +1,8 @@
 import math
 from math import sin,radians
 GRAVITY = 9.81
+SCALE = 0.9
+LENGTH = 80
 def get_input():
     while True:
         angle = float(input("kąt: "))
@@ -15,12 +17,23 @@ def calculate_impact(angle, velocity):
     z = velocity ** 2 * sin(radians(angle) * 2) / GRAVITY
     return z
 
+def print_impact(impact):
+    scaled_impact = round(SCALE * impact)
+    print(scaled_impact)
+    """for i in range(0, LENGTH):
+        if i == scaled_impact:
+            print("X", end="")
+        else:
+            print("_", end="")
+    print()"""
 def main():
-    angle, velocity = get_input()
-    print(angle)
-    print(velocity)
-    z = calculate_impact(angle, velocity)
-    print(z)
+    while True:
+        angle, velocity = get_input()
+        print(angle)
+        print(velocity)
+        z = calculate_impact(angle, velocity)
+        print(z)
+        print_impact(z)
 
 if __name__ == "__main__":
     main()
