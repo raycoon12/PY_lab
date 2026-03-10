@@ -58,6 +58,5 @@ def main():
             break
         shooter,target = target,shooter
 
-
 if __name__ == '__main__':
     main()
