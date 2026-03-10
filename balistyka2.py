@@ -6,8 +6,9 @@ def main(stdscr):
         stdscr.erase()
         for y in range(max_y-2):
             row = ["#" if pos else " " for pos in grid[y]]
-
-
+            row = row[:max_x]
+            row = "".join(row)
+            stdscr.addstr(y, 0, row)
         stdscr.addstr(max_y-1, 0, info)
     stdscr.keypad(True)
     player1 = (0, 0)
