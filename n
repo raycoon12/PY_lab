@@ -1,0 +1,102 @@
+import sys
+from PySide6.QtWidgets import (QApplication, QWidget, QLineEdit, QPushButton, 
+                               QLabel, QGridLayout, QComboBox, QMessageBox)
+
+# Importujemy Twoją klasę z poprzedniego pliku
+from fraction import Fraction
+
+class FractionCalculator(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Kalkulator Ułamków")
+
+        # --- TWORZENIE ELEMENTÓW INTERFEJSU ---
+        
+        # Pola dla pierwszego ułamka (licznik i mianownik)
+        self.num1_edit = QLineEdit()
+        self.num1_edit.setPlaceholderText("Licznik 1")
+        self.den1_edit = QLineEdit()
+        self.den1_edit.setPlaceholderText("Mianownik 1")
+
+        # Lista rozwijana z operacjami matematycznymi
+        self.operation_box = QComboBox()
+        self.operation_box.addItems(["+", "-", "*", "/"])
+
+        # Pola dla drugiego ułamka
+        self.num2_edit = QLineEdit()
+        self.num2_edit.setPlaceholderText("Licznik 2")
+        self.den2_edit = QLineEdit()
+        self.den2_edit.setPlaceholderText("Mianownik 2")
+
+        # Etykieta na wynik i przycisk obliczania
+        self.result_label = QLabel("= Wynik")
+        self.calc_button = QPushButton("Oblicz")
+        
+        # Połączenie sygnału kliknięcia z naszą metodą (Slotem)
+        self.calc_button.clicked.connect(self.calculate)
+
+        # --- ROZMIESZCZENIE (QGridLayout) ---
+        layout = QGridLayout(self)
+        
+        # Wiersz 0: Liczniki i operacja
+        layout.addWidget(self.num1_edit, 0, 0)
+        layout.addWidget(self.operation_box, 0, 1, 2, 1) # Zajmuje 2 wiersze (środek)
+        layout.addWidget(self.num2_edit, 0, 2)
+        layout.addWidget(self.result_label, 0, 3, 2, 1)  # Zajmuje 2 wiersze
+        
+        # Wiersz 1: Linie ułamkowe (użyjemy zwykłych QLabeli jako separatorów)
+        layout.addWidget(QLabel("---"), 1, 0)
+        layout.addWidget(QLabel("---"), 1, 2)
+
+        # Wiersz 2: Mianowniki
+        layout.addWidget(self.den1_edit, 2, 0)
+        layout.addWidget(self.den2_edit, 2, 2)
+
+        # Wiersz 3: Przycisk
+        layout.addWidget(self.calc_button, 3, 0, 1, 4) # Rozciągnięty na całą szerokość
+
+    # --- LOGIKA APLIKACJI ---
+    def calculate(self):
+        try:
+            # 1. Pobieranie danych z pól i zamiana tekstu (str) na liczby (int)
+            n1 = int(self.num1_edit.text())
+            d1 = int(self.den1_edit.text())
+            n2 = int(self.num2_edit.text())
+            d2 = int(self.den2_edit.text())
+
+            # 2. Tworzenie obiektów Twojej klasy
+            fraction1 = Fraction(n1, d1)
+            fraction2 = Fraction(n2, d2)
+
+            # 3. Odczytanie wybranej operacji
+            op = self.operation_box.currentText()
+
+            # 4. Wykonanie odpowiedniej akcji
+            if op == "+":
+                result = fraction1 + fraction2  # Tutaj działa Twoje __add__!
+            elif op == "-":
+                result = fraction1 - fraction2  # Tutaj działa Twoje __sub__!
+            elif op == "*":
+                result = fraction1 * fraction2  # Tutaj działa Twoje __mul__!
+            elif op == "/":
+                result = fraction1 / fraction2  # Tutaj działa Twoje __truediv__!
+
+            # 5. Wyświetlenie wyniku (funkcja str() użyje Twojego __str__)
+            self.result_label.setText(f"= {str(result)}")
+
+        # --- OBSŁUGA BŁĘDÓW ---
+        except ValueError:
+            # Użytkownik wpisał litery zamiast cyfr lub zostawił puste pole
+            QMessageBox.warning(self, "Błąd wejścia", "Proszę wpisać poprawne liczby całkowite!")
+        except ZeroDivisionError:
+            # Użytkownik wpisał 0 w mianowniku
+            QMessageBox.critical(self, "Błąd matematyczny", "Nie można dzielić przez zero!")
+        except Exception as e:
+            # Każdy inny nieprzewidziany błąd
+            QMessageBox.critical(self, "Błąd", f"Wystąpił nieoczekiwany błąd: {e}")
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = FractionCalculator()
+    window.show()
+    sys.exit(app.exec())
